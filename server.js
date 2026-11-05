@@ -1,44 +1,46 @@
 import express from 'express';
-const app = express(); 
-const PORT = 3000;
+const app = express();
 
-function criarMensagem (id,usuario,texto) {
-    return {id,usuario: usuario.trim(), texto: texto.trim()}
+const PORT = 3000
+
+//sprint 02: Array de objetos e função de consulta
+function criarMensagem(id, usuario, texto){
+    return{id, usuario: usuario.trim(), texto: texto.trim() };
 }
-//split2- array de objetos e função de consulta
 
 const mensagem = [
-     criarMensagem(1, "ana", 'olá turma'),
-     criarMensagem(2, "lucas", 'servidor funciona'),
-     criarMensagem(3, 'felipe', 'vamos conversar com o mensageiro local'),
+    criarMensagem(1, 'Ana', 'Olá Turma!'),
+    criarMensagem(2, 'Pedro', 'Servidor funciona TOP!'),
+    criarMensagem(3, 'João', 'Vamos conversar  com o mesageiro local'),
 ];
-function listaMensagem () {
+
+function listaMensagens(){
     return mensagem;
+};
+
+function quantidadeDeMensagens() {
+    return mensagens.length;
 }
 
-function quantidadeDeMensagem () {
-    return mensagem.length;
-}
 
 function buscarMensagem(id) {
-    return mensagem.find(mensagem => mensagem.id === id)
+    return mensagens.find(mensagem => mensagem.id === id)
 }
 
-app.get("/", (req, res) => {res.send("Server rodando! 🚀")});
-app.get("/status", (req, res) => {res.json( {status: "Online", sprint: 2, total:quantidadeDeMensagem } )});
-app.get("/sobre", (req, res) => {res.json( `Meu primeiro servidor Node.js com Express e ES modules. `)});    
 
-app.get('/mensagens', (req, res) => res.json(listaMensagem ()))
-app.get('/total-mensagens', (req, res) => res.json({total: quantidadeDeMensagem}));
-app.get('/mensagens/:id', (req, res) => {
+app.get('/', (req, res) => res.send('Servidor rodando! 🚀'));
+app.get('/status', (req, res) => res.json({ status: 'online', sprint: 2, total: quantidadeDeMensagens() }));
+app.get('/sobre', (req, res) => res.send('Meu primeiro servidor Node.js com Express e ES Modules.'));
+
+app.get('/mensagens', (req, res) => res.json(listaMensagens()));
+app.get('/total-mensagens', (req, res) => res.json({ total: quantidadeDeMensagens() }));
+app.get('/mensagem/:id', (req. res) => {
     const mensagem = buscarMensagem(Number(req.params.id));
     if (!mensagem)
-        return res.status(404).json({erro: 'mensagem não encontrada'})
+        return res.status(404).json({ erro: 'Mensagem não encontrada'});
     res.json(mensagem);
 });
 
- app.listen(PORT, () => console.log(`Servidor em http://localhost:${PORT}`))
- 
- 
+app.listen(PORT, => console.log(`Servidor em http://localhost:${PORT}`));
  
  
